@@ -1,0 +1,7 @@
+#+title: M1 MacBook Nix-Darwin Flakes System
+
+This is the nix-flake setup for my M1 Air, plagiarized from [[https://gist.github.com/jmatsushita/5c50ef14b4b96cb24ae5268dab613050][this gist]].
+
+To switch to a new version of the system, clone this repository and run these:
+1. ~nix build .#darwinConfigurations.mair.system~
+2. ~./result/sw/bin/darwin-rebuild switch --flake .~
