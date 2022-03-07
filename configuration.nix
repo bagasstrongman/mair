@@ -2,19 +2,22 @@
 {
   # Nix configuration ------------------------------------------------------------------------------
 
-  nix.binaryCaches = [
-    "https://cache.nixos.org/"
-  ];
-  nix.binaryCachePublicKeys = [
-    "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
-  ];
-  nix.trustedUsers = [
-    "@admin"
-  ];
   users.nix.configureBuildUsers = true;
 
   # Enable experimental nix command and flakes
   nix = {
+    binaryCaches = [
+      "https://cache.nixos.org/"
+    ];
+
+    binaryCachePublicKeys = [
+      "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+    ];
+
+    trustedUsers = [
+      "@admin"
+    ];
+
     package = pkgs.nixUnstable;
     extraOptions = ''
                  auto-optimise-store = true
@@ -26,10 +29,41 @@
   };
 
   # Create /etc/bashrc that loads the nix-darwin environment.
-  programs.zsh.enable = true;
+  programs = {
 
+    gnupg.agent = {
+      enable = true;
+      enableSSHSupport = true;
+    };
+
+    tmux = {
+      enable = true;
+      enableFzf = true;
+      enableMouse = true;
+      enableSensible = true;
+    };
+
+    zsh = {
+      enable = true;
+      enableBashCompletion = true;
+      enableCompletion = true;
+      enableFzfCompletion = true;
+      enableFzfHistory = true;
+      enableSyntaxHighlighting = true;
+
+      # shellInit = ''
+      #   export PATH="/opt/homebrew/sbin:$PATH"
+      #   export PATH="/sbin:/usr/sbin:$PATH"
+      #   source /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+      #   source /nix/var/nix/profiles/default/etc/profile.d/nix.sh
+      # '';
+    };
+  };
   # Auto upgrade nix package and the daemon service.
-  services.nix-daemon.enable = true;
+  services = {
+    # emacs.enable = true;
+    nix-daemon.enable = true;
+  };
 
   # Apps
   # `home-manager` currently has issues adding them to `~/Applications`
